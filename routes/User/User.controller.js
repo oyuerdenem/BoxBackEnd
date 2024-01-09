@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 //mongodb
-const User = require('./../models/User');
+const User = require('./User.model');
 
 //password handler
 const bcrypt = require('bcrypt');
@@ -12,6 +12,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const fsPromises = require('fs').promises;
 const path = require('path');
+const verifyJWT = require('../../middleware/verifyJWT');
 
 
 //SignUp
@@ -43,7 +44,6 @@ router.post('/signup', (req, res) => {
         })
     } else {
         User.find({email}).then(result => {
-
             if(result.length){
                 //a user already exists
                 res.json({
@@ -117,7 +117,7 @@ router.post('/signin', (req, res) => {
                         const accessToken = jwt.sign(
                             {"email": User.email},
                             process.env.ACCESS_TOKEN_SECRET,
-                            { expiresIn: '30s'}
+                            { expiresIn: '8h'}
                         )
                         //password match
                         res.json({
@@ -153,5 +153,11 @@ router.post('/signin', (req, res) => {
         })
     }
 })
+
+
+router.get("/", verifyJWT, (req, res) => {
+    console.log(req.email);
+    return res.send("Hi")
+});
 
 module.exports = router;
