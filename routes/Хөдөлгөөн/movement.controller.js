@@ -64,29 +64,29 @@ router.get('/', verifyJWT, async(req, res) => {
 /**
  * Update
  */
-router.put('/', verifyJWT, (req, res) => {
-    const id = req.params.id;
-    const { SendStorageId, ReceiveStorageId, SendProduct, Quantity, dateAt } = req.body;
+// router.put('/', verifyJWT, (req, res) => {
+//     const id = req.params.id;
+//     const { SendStorageId, ReceiveStorageId, SendProduct, Quantity, dateAt } = req.body;
 
-    if (!SendStorageId && !ReceiveStorageId && !SendProduct && !Quantity && !dateAt) {
-        res.json({
-            success: false,
-            message: "Please provide at least one information to update."
-        });
-        return;
-    }
+//     if (!SendStorageId && !ReceiveStorageId && !SendProduct && !Quantity && !dateAt) {
+//         res.json({
+//             success: false,
+//             message: "Please provide at least one information to update."
+//         });
+//         return;
+//     }
 
-    Sales.findByIdAndUpdate(id,
-        { SendStorageId, ReceiveStorageId, SendProduct, Quantity, dateAt },
-        { new: true } // Return the updated document
-    ).then(data => res.json({
-        success: true,
-        values: data
-    })).catch(err => res.json({
-        success: false,
-        message: err
-    }));
-})
+//     Sales.findByIdAndUpdate(id,
+//         { SendStorageId, ReceiveStorageId, SendProduct, Quantity, dateAt },
+//         { new: true } // Return the updated document
+//     ).then(data => res.json({
+//         success: true,
+//         values: data
+//     })).catch(err => res.json({
+//         success: false,
+//         message: err
+//     }));
+// })
 
 /**
  * Delete

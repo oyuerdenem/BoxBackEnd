@@ -11,6 +11,8 @@ const StoreRouter = require('./routes/Дэлгүүр/store.controller');
 const StorageRouter = require('./routes/Агуулах/storage.controller');
 const ProductRouter = require('./routes/Бараа/product.controller');
 // const SaleRouter = require('./routes/Борлуулалт/sales.controller');
+const SponsorRouter = require('./routes/Нийлүүлэгч/sponsor.controller');
+const MovementRouter = require('./routes/Хөдөлгөөн/movement.controller');
 
 //for accepting post form data
 const bodyParser = require('express').json;
@@ -22,6 +24,8 @@ app.use('/store', StoreRouter)
 app.use('/storage', StorageRouter)
 // app.use('/sales', SaleRouter)
 app.use('/product', ProductRouter)
+app.use('/sponsor', SponsorRouter)
+app.use('/movement', MovementRouter)
 
 app.listen(port, () => {
     console.log('Server running on port ' + port);

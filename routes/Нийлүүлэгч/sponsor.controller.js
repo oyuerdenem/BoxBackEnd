@@ -6,7 +6,6 @@ const Sponsor = require('./sponsor.model');
 
 const verifyJWT = require('../../middleware/verifyJWT');
 
-
 /**
  * Create
  */

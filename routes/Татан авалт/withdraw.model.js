@@ -2,7 +2,7 @@ const mongoose = require ('mongoose');
 const { schema } = require('../Бараа/product');
 const Schema = mongoose.Schema;
 
-const withdrawSchema = newSchema({
+const withdrawSchema = Schema({
     SponsorName:{
         type: String,
         ref: "Sponsor",
