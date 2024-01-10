@@ -1,7 +1,7 @@
 const mongoose = require ('mongoose');
 const Schema = mongoose.Schema;
 
-const movementSchema = newSchema({
+const movementSchema = Schema({
     sendStorageID: {
       ref: "Storage",
       required: true,
