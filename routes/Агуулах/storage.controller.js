@@ -16,7 +16,7 @@ router.post('/', verifyJWT, async(data, res) => {
 
     if(!name || !location){
         return res.json({
-            status: false,
+            success: false,
             message: "empty input fields."
         })
     }
@@ -82,7 +82,7 @@ router.put('/:id', verifyJWT, (req, res) => {
 
     if(!body?.name && !body?.location){
         res.json({
-            status: false,
+            success: false,
             message: "Агуулахын нэр болон хаягийг оруулна"
         })
         return
@@ -107,20 +107,20 @@ router.delete('/:id', verifyJWT, async(req, res) => {
 
         if(deletedStorage) {
             res.json({
-                status: true,
+                success: true,
                 message: "Storage deleted successfully.",
                 data: deletedStorage
             })
         } else {
             res.json({
-                status: false,
+                success: false,
                 message: err.message || err
             })
         }
     } catch (err){
         console.error(err);
         res.json({
-            status: false,
+            success: false,
             message: err.message || err
         })
     }

@@ -65,7 +65,7 @@ router.put(':/id', verifyJWT, (req, res) => {
 
     if(!SendStorageId && !RecieveStoreId && !SendProduct && !Quantity && !dateAt){
         res.json({
-            status: false,
+            success: false,
             message: "Pls provide both informations."
         })
         return
@@ -92,20 +92,20 @@ router.delete('/:id', verifyJWT, async(req, res) => {
 
         if(deletedSale){
             res.json({
-                status: "SUCCESS",
+                success: true,
                 message: "Sale deleted successfully",
                 data: deletedSale
             })
         } else {
             res.json({
-                status: false,
+                success: false,
                 message: err.message || err 
             })
         }
     } catch (err){
         console.error(err);
         res.json({
-            status: false,
+            success: false,
             message: err.message || err
         })
     }

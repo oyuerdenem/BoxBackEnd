@@ -59,7 +59,7 @@ router.put('/:id', verifyJWT, (req, res) => {
 
     if (!name && !location) {
         res.json({
-            status: "failed",
+            success: false,
             message: "Please provide both name and location."
         })
         return
@@ -100,7 +100,7 @@ router.delete('/:id', verifyJWT, async (req, res) => {
     } catch (err) {
         console.error(err);
         res.json({
-            status: "failed",
+            success: false,
             message: "An error occurred while deleting the store."
         })
     }
