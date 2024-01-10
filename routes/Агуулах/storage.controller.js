@@ -84,7 +84,7 @@ router.put('/:id', verifyJWT, (req, res) => {
         res.json({
             success: false,
             message: "Агуулахын нэр болон хаягийг оруулна"
-        })
+        })  
         return
     }
     storage.findByIdAndUpdate(id, { ...body },
