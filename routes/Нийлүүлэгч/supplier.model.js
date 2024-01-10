@@ -1,7 +1,7 @@
 const mongoose = require ('mongoose');
 const Schema = mongoose.Schema;
 
-const sponsorSchema = Schema({
+const SupplierSchema = Schema({
     name: {
       type: String,
       required : true
@@ -9,8 +9,7 @@ const sponsorSchema = Schema({
     location: {
       type: String,
       required: true
-
     }
   });
 
-module.exports = mongoose.model('Sponsor', sponsorSchema);
+module.exports = mongoose.model('Supplier', SupplierSchema);

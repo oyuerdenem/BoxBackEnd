@@ -116,5 +116,4 @@ router.delete('/', verifyJWT, async(req, res) => {
         })
     }
 })
-
 module.exports = router;

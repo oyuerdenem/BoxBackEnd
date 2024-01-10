@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 //mongodb
-const Sponsor = require('./sponsor.model');
+const Supplier = require('./supplier.model');
 
 const verifyJWT = require('../../middleware/verifyJWT');
 
@@ -11,21 +11,12 @@ const verifyJWT = require('../../middleware/verifyJWT');
  */
 router.post('/', verifyJWT, async (data, res) => {   
     let {name, location } = data.body;
-    name = name.trim();
-    location = location.trim();
 
-    if(!name || !location){
-        return res.json({
-            success: false,
-            message: "empty input fields."
-        })
-    }
-    
-    const newSponsor = new Sponsor({
+    const newSupplier = new Supplier({
         name, location
     });
 
-    newSponsor.save().then(result => {
+    newSupplier.save().then(result => {
         res.json({
             success: true,
             message: "Added successfully.",
@@ -41,7 +32,7 @@ router.post('/', verifyJWT, async (data, res) => {
  * Read
  */
 router.get('/', verifyJWT, async(req, res) => {
-    Sponsor.find().then(data => res.send({
+    Supplier.find().then(data => res.send({
         success: true, 
         values: data
     })).catch(err => res.send({
@@ -68,7 +59,7 @@ router.put('/:id', verifyJWT, (req, res) => {
         })
         return
     }
-    Sponsor.findByIdAndUpdate(id, { ...body }
+    Supplier.findByIdAndUpdate(id, { ...body }
     ).then(data => res.json({
         success: true,
         values: data
@@ -84,13 +75,13 @@ router.put('/:id', verifyJWT, (req, res) => {
 router.delete('/:id', verifyJWT, async(req, res) => {
     try{
         const id = req.params.id;
-        const deletedSponsor = await Sponsor.findByIdAndDelete(id);
+        const deletedSupplier = await Supplier.findByIdAndDelete(id);
 
-        if(deletedSponsor) {
+        if(deletedSupplier) {
             res.json({
                 status: true,
-                message: "sponsor deleted successfully.",
-                data: deletedSponsor
+                message: "supplier deleted successfully.",
+                data: deletedSupplier
             })
         } else {
             res.json({
@@ -99,7 +90,6 @@ router.delete('/:id', verifyJWT, async(req, res) => {
             })
         }
     } catch (err){
-        console.error(err);
         res.json({
             status: false,
             message: err.message || err
