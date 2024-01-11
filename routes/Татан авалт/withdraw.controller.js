@@ -3,9 +3,9 @@ const router = express.Router();
 
 //mongodb
 const ProductModel = require('../Бараа/product.model');
-const StorageModel = require('../Агуулах/storage.model');
+// const StorageModel = require('../Агуулах/storage.model');
 const WithdrawModel = require('./withdraw.model');
-const SupplierModel = require('../Нийлүүлэгч/supplier.controller');
+// const SupplierModel = require('../Нийлүүлэгч/supplier.controller');
 
 const verifyJWT = require('../../middleware/verifyJWT');
 
@@ -17,7 +17,7 @@ router.post('/', verifyJWT, async(data, res) => {
 
     const price = await ProductModel.findById(productId).then(product => product.price * quantity).catch(err => res.json({
         success: false,
-        message: "Baraanii uniig tootsooloh ved aldaa garlaa" + JSON.stringify(err)
+        message: "Baraanii uniig tootsooloh ved aldaa garlaa"
     }));
     console.log(price)
 
