@@ -30,6 +30,8 @@ router.post('/', verifyJWT, async(data, res) => {
         dateAt: new Date()
     });
 
+    // console.log(newData);
+
     newData.save().then(result => {
         res.json({
             success: true,

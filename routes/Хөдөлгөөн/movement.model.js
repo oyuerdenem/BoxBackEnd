@@ -1,30 +1,30 @@
 const mongoose = require ('mongoose');
 const Schema = mongoose.Schema;
 
-const movementSchema = Schema({
-    sendStorageID: {
+const MovementSchema = Schema({
+    SendStorageId: {
       ref: "Storage",
       required: true,
       type: mongoose.Schema.Types.ObjectId,
     },
-    recieveStorageID: {
+    RecieveStorageId: {
       ref: "Storage",
       required: true,
       type: mongoose.Schema.Types.ObjectId,
     },
-    productID: {
+    ProductId: {
       ref: "Product",
       required: true,
       type: mongoose.Schema.Types.ObjectId,
     },
-    quantity: {
+    Quantity: {
       type: Number, 
       required: true
     },
-    dateAt: {
+    DateAt: {
       type: Date, 
       require: true
     },
   });
 
-module.exports = mongoose.model('Movement', movementSchema);
+module.exports = mongoose.model('Movement', MovementSchema);

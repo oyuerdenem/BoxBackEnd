@@ -31,6 +31,7 @@ app.use('/supplier', SupplierRouter)
 app.use('/movement', MovementRouter)
 app.use('/withdraw', WithdrawRouter)
 app.use('/sale', SaleRouter);
+app.use('/movement', MovementRouter);
 
 app.listen(port, () => {
     console.log('Server running on port ' + port);
