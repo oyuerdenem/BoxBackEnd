@@ -4,6 +4,8 @@ const router = express.Router();
 //mongodb
 const Store = require('./Store.model');
 
+const SaleModel = require('../Sale/Sale.model');
+
 const verifyJWT = require('../../middleware/verifyJWT');
 
 /**
@@ -83,6 +85,16 @@ router.put('/:id', verifyJWT, (req, res) => {
 router.delete('/:id', verifyJWT, async (req, res) => {
     try {
         const id = req.params.id;
+
+        const isUsedStore = await SaleModel.findOne({StoreId: id});
+
+        if(isUsedStore){
+            return res.json({
+                success: false,
+                message: "Ene delguuriin medeellliig ustgah bolomjgui"
+            });
+        }
+
         const deletedStore = await Store.findByIdAndDelete(id);
 
         if (deletedStore) {

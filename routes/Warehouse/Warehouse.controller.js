@@ -4,6 +4,10 @@ const router = express.Router();
 //mongodb
 const Warehouse = require('./Warehouse.model');
 
+const MovementModel = require('../Movement/Movement.model');
+const SaleModel = require('../Sale/Sale.model');
+const SupplyingModel = require('../Supplying/Supplying.model');
+
 const verifyJWT = require('../../middleware/verifyJWT');
 
 /**
@@ -84,6 +88,18 @@ router.put('/:id', verifyJWT, (req, res) => {
  */
 router.delete('/:id', verifyJWT, async(req, res) => {
         const id = req.params.id;
+
+        const isUsedWarehousetInSupplying = await SupplyingModel.findOne({WarehouseId: id});
+        const isUsedWarehouseInMovement = await MovementModel.findOne({WarehouseId: id});
+        const isUsedWarehousetInSale = await SaleModel.findOne({WarehouseId: id});
+
+        if(isUsedWarehousetInSupplying || isUsedWarehouseInMovement || isUsedWarehousetInSale){
+            return res.json({
+                success: false,
+                message: "Ene aguulahiig ustgah bolomjgui baina."
+            })
+        }
+
         const DeletedData = await Warehouse.findByIdAndDelete(id);
         console.log(DeletedData);
         if(DeletedData) {

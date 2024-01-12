@@ -4,6 +4,10 @@ const router = express.Router();
 //mongodb
 const Product = require('./Product.model');
 
+const MovementModel = require('../Movement/Movement.model');
+const SaleModel = require('../Sale/Sale.model');
+const SupplyingModel = require('../Supplying/Supplying.model');
+
 const verifyJWT = require('../../middleware/verifyJWT');
 // const { verify } = require('jsonwebtoken');
 
@@ -81,6 +85,18 @@ router.put('/:id', verifyJWT, (req, res) => {
 router.delete('/:id', verifyJWT, async(req, res) => {
     try{
         const id = req.params.id;
+
+        const isUsedProductInSupplying = await SupplyingModel.findOne({ProductId: id});
+        const isUsedProductInMovement = await MovementModel.findOne({ProductId: id});
+        const isUsedProductInSale = await SaleModel.findOne({ProductId: id});
+
+        if(isUsedProductInSupplying || isUsedProductInMovement || isUsedProductInSale){
+            return res.json({
+                success: false,
+                message: "Ene baraag ustgah bolomjgui baina."
+            })
+        }
+
         const deletedProduct = await Product.findByIdAndDelete(id);
 
         if(deletedProduct){

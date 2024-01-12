@@ -11,7 +11,7 @@ const port = 3000;
 /**
  * Routes
  */
-// const StockRouter = require('./Routes/Stock/Stock.controller');
+const StockRouter = require('./Routes/Stock/Stock.controller');
 
 /** Objects */
 // const UserRouter = require('./Routes/User/User.controller');
@@ -30,7 +30,7 @@ const bodyParser = require('express').json;
 app.use(bodyParser());
 app.use(cors());
 
-// app.use('/stock', StockRouter)
+app.use('/stock', StockRouter)
 // app.use('/user', UserRouter)
 app.use('/warehouse', WarehouseRouter)
 app.use('/product', ProductRouter)
