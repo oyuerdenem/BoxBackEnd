@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 //mongodb
-const User = require('./User.model');
+const UserModel = require('./User.model');
 
-//password handler
+//Password handler
 const bcrypt = require('bcrypt');
 
 //jwt
@@ -17,49 +17,49 @@ const verifyJWT = require('../../middleware/verifyJWT');
 
 //SignUp
 router.post('/signup', (req, res) => {
-    let {email, name, password} = req.body;
-    email = email.trim();
-    name = name.trim();
-    password = password.trim();
+    let {Email, Name, Password} = req.body;
+    Email = Email.trim();
+    Name = Name.trim();
+    Password = Password.trim();
 
-    if(email == "" || name == "" || password == ""){
+    if(Email == "" || Name == "" || Password == ""){
         res.json({
             status: "failed",
             message: "empty input fields."
         })
-    } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)){
+    } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(Email)){
         res.json({
             status: "failed",
-            message: "invalid email entered."
+            message: "invalid Email entered."
         })
-    } else if (!/^[a-zA-Z]*$/.test(name)){
+    } else if (!/^[a-zA-Z]*$/.test(Name)){
         res.json({
             status: "failed",
-            message: "invalid name entered."
+            message: "invalid Name entered."
         })
-    } else if (password.length < 8) {
+    } else if (Password.length < 8) {
         res.json({
             status: "failed",
             message: "Password is too short."
         })
     } else {
-        User.find({email}).then(result => {
+        UserModel.find({Email}).then(result => {
             if(result.length){
-                //a user already exists
+                //a UserModel already exists
                 res.json({
                     status: "failed",
-                    message: "User with the provided email already exists."
+                    message: "UserModel with the provided Email already exists."
                 })
             } else {
-                //try to create new user 
+                //try to create new UserModel 
 
-                //password handling 
+                //Password handling 
                 const saltRounds = 10;
-                bcrypt.hash(password, saltRounds).then(hashedPassword => {
-                    const newUser  = new User({
-                        email, 
-                        name,
-                        password: hashedPassword
+                bcrypt.hash(Password, saltRounds).then(hashedPassword => {
+                    const newUser  = new UserModel({
+                        Email, 
+                        Name,
+                        Password: hashedPassword
                     })
 
                     newUser.save().then(result => {
@@ -72,14 +72,14 @@ router.post('/signup', (req, res) => {
                     .catch(err => {
                         res.json({
                             status: "failed",
-                            message: "An error occurred while saving user account!"
+                            message: "An error occurred while saving UserModel account!"
                         })
                     })
                 })
                 .catch(err => {
                     res.json({
                         status: "failed",
-                        message: "An error occurred while hashing password!"
+                        message: "An error occurred while hashing Password!"
                     })
                 })
             }
@@ -89,37 +89,37 @@ router.post('/signup', (req, res) => {
             console.log(err);
             res.json({
                 status: "failed",
-                message: "An error occured while checking for existing user!"
+                message: "An error occured while checking for existing UserModel!"
             })
         })
     }
 })
 //SignIn
 router.post('/signin', (req, res) => {
-    let {email, password} = req.body;
-    email = email.trim();
-    password = password.trim();
+    let {Email, Password} = req.body;
+    Email = Email.trim();
+    Password = Password.trim();
     
-    if(email == "" || password == ""){
+    if(Email == "" || Password == ""){
         res.json({
             status: "failed",
             message: "Empty credentials supplied"
         })
     } else {
-        User.find({email})
+        UserModel.find({Email})
         .then(data => {
             if(data){
-                //user exists
-                const hashedPassword = data[0].password;
-                bcrypt.compare(password, hashedPassword).then(result => {
+                //UserModel exists
+                const hashedPassword = data[0].Password;
+                bcrypt.compare(Password, hashedPassword).then(result => {
                     if(result) {
                         //create JWTs
                         const accessToken = jwt.sign(
-                            {"email": User.email},
+                            {"Email": UserModel.Email},
                             process.env.ACCESS_TOKEN_SECRET,
                             { expiresIn: '8h'}
                         )
-                        //password match
+                        //Password match
                         res.json({
                             status: "Success",
                             message: "Signin successful",
@@ -128,14 +128,14 @@ router.post('/signin', (req, res) => {
                     } else {
                         res.json({
                             status: "failed",
-                            message: "Invalid password entered!"
+                            message: "Invalid Password entered!"
                         })
                     }
                 })
                 .catch(err => {
                     res.json({
                         status: "failed",
-                        message: "An error occurred while comparing passwords"
+                        message: "An error occurred while comparing Passwords"
                     })
                 })
             } else {
@@ -148,7 +148,7 @@ router.post('/signin', (req, res) => {
         .catch(err => {
             res.json({
                 status: "failed",
-                message: "An error occurred while checking for existing for user"
+                message: "An error occurred while checking for existing for UserModel"
             })
         })
     }
@@ -156,7 +156,7 @@ router.post('/signin', (req, res) => {
 
 
 router.get("/", verifyJWT, (req, res) => {
-    console.log(req.email);
+    console.log(req.Email);
     return res.send("Hi")
 });
 

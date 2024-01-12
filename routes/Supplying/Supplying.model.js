@@ -1,15 +1,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const withdrawSchema = Schema({
+const SupplyingSchema = Schema({
   SupplierId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Supplier",
     required: true,
   },
-  StorageId: {
+  WarehouseId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Storage",
+    ref: "Warehouse",
     required: true,
   },
   ProductId: {
@@ -19,8 +19,8 @@ const withdrawSchema = Schema({
   },
   Quantity: { type: Number, required: true },
   Price: { type: Number, required: true },
-  dateAt: { type: Date, require: true }
+  DateAt: { type: Date, require: true }
 
 });
 
-module.exports = mongoose.model('Withdraw', withdrawSchema);
+module.exports = mongoose.model('Supplying', SupplyingSchema);

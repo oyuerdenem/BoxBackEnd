@@ -1,37 +1,44 @@
 require('dotenv').config();
-//mongodb
+/**
+ * MongoDB
+ */
 require('./config/db');
 
 const app = require('express')();
 const cors = require("cors")
 const port = 3000;
 
-const UserRouter = require('./routes/User/User.controller');
-//1.9
-const StoreRouter = require('./routes/Дэлгүүр/store.controller');
-const StorageRouter = require('./routes/Агуулах/storage.controller');
-// 1.10
-const ProductRouter = require('./routes/Бараа/product.controller');
-const SupplierRouter = require('./routes/Нийлүүлэгч/supplier.controller');
-const MovementRouter = require('./routes/Хөдөлгөөн/movement.controller');
-const WithdrawRouter = require('./routes/Татан авалт/withdraw.controller');
+/**
+ * Routes
+ */
+// const StockRouter = require('./Routes/Stock/Stock.controller');
 
-const SaleRouter = require('./routes/Борлуулалт/sale.controller');
+/** Objects */
+// const UserRouter = require('./Routes/User/User.controller');
+const WarehouseRouter = require('./Routes/Warehouse/Warehouse.controller'); //✅
+const ProductRouter = require('./Routes/Product/Product.controller'); //✅
+const StoreRouter = require('./Routes/Store/Store.controller'); //✅
+const SupplierRouter = require('./Routes/Supplier/Supplier.controller'); //✅
+
+/** Actions */
+const SaleRouter = require('./Routes/Sale/Sale.controller'); //✅
+const MovementRouter = require('./Routes/Movement/Movement.controller'); //✅
+const SupplyingRouter = require('./Routes/Supplying/Supplying.controller'); 
 
 //for accepting post form data
 const bodyParser = require('express').json;
 app.use(bodyParser());
 app.use(cors());
 
-app.use('/user', UserRouter)
-app.use('/store', StoreRouter)
-app.use('/storage', StorageRouter)
+// app.use('/stock', StockRouter)
+// app.use('/user', UserRouter)
+app.use('/warehouse', WarehouseRouter)
 app.use('/product', ProductRouter)
+app.use('/store', StoreRouter)
 app.use('/supplier', SupplierRouter)
-app.use('/movement', MovementRouter)
-app.use('/withdraw', WithdrawRouter)
 app.use('/sale', SaleRouter);
-app.use('/movement', MovementRouter);
+app.use('/movement', MovementRouter)
+app.use('/supplying', SupplyingRouter)
 
 app.listen(port, () => {
     console.log('Server running on port ' + port);

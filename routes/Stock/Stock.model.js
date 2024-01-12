@@ -1,9 +1,9 @@
 const mongoose = require ('mongoose');
 const Schema = mongoose.Schema;
 
-const resourceSchema = Schema({
-    StorageId: {
-      ref: "Storage",
+const StockSchema = Schema({
+    WarehouseId: {
+      ref: "Warehouse",
       required: true,
       type: mongoose.Schema.Types.ObjectId,
     },
@@ -16,10 +16,10 @@ const resourceSchema = Schema({
       type: Number, 
       required: true
     },
-    dateAt: { 
+    DateAt: { 
       type: Date, 
       require: true 
     }
   });
 
-module.exports = mongoose.model('resource', resourceSchema);
+module.exports = mongoose.model('Stock', StockSchema);

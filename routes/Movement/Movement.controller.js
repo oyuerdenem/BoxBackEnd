@@ -2,23 +2,23 @@ const express = require('express');
 const router = express.Router();
 
 //mongodb
-const MovementModel  = require('./movement.model.js');
+const MovementModel  = require('./Movement.model.js');
 
 //JWT
-const verifyJWT = require('../../middleware/verifyJWT');
+const verifyJWT = require('../../middleware/verifyJWT.js');
 
 /**
  * Create
  */
 router.post('/', verifyJWT, async (data, res) => {
-    let {senderId, recieverId, productId, quantity} = data.body;
-    console.log(senderId);
+    let {SendWarehouseId, RecieveWarehouseId, ProductId, Quantity} = data.body;
+    console.log(SendWarehouseId);
     
     const newData = new MovementModel({
-        SendStorageId: senderId,
-        RecieveStorageId: recieverId,
-        ProductId: productId,
-        Quantity: quantity,
+        SendWarehouseId: SendWarehouseId,
+        RecieveWarehouseId: RecieveWarehouseId,
+        ProductId: ProductId,
+        Quantity: Quantity,
         DateAt: new Date()
     });
 
@@ -39,7 +39,7 @@ router.post('/', verifyJWT, async (data, res) => {
  */
 router.get('/', verifyJWT, async(req, res) => {
     MovementModel.find()
-    .populate("SendStorageId RecieveStorageId ProductId")
+    .populate("SendWarehouseId RecieveWarehouseId ProductId")
         .then(data => res
             .send({
                 success: true, 

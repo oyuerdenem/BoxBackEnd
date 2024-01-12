@@ -2,21 +2,31 @@ const express = require('express');
 const router = express.Router();
 
 //mongodb
-const Supplier = require('./supplier.model');
+const Warehouse = require('./Warehouse.model');
 
 const verifyJWT = require('../../middleware/verifyJWT');
 
 /**
  * Create
  */
-router.post('/', verifyJWT, async (data, res) => {   
-    let {name, location } = data.body;
+router.post('/', verifyJWT, async(data, res) => {
+    let {Name, Location} = data.body;
+    Name = Name.trim();
+    Location = Location.trim();
 
-    const newSupplier = new Supplier({
-        name, location
+    if(!Name || !Location){
+        return res.json({
+            success: false,
+            message: "empty input fields."
+        })
+    }
+    
+    const newData = new Warehouse({
+        Name, 
+        Location
     });
 
-    newSupplier.save().then(result => {
+    newData.save().then(result => {
         res.json({
             success: true,
             message: "Added successfully.",
@@ -32,7 +42,7 @@ router.post('/', verifyJWT, async (data, res) => {
  * Read
  */
 router.get('/', verifyJWT, async(req, res) => {
-    Supplier.find().then(data => res.send({
+    Warehouse.find().then(data => res.send({
         success: true, 
         values: data
     })).catch(err => res.send({
@@ -48,18 +58,18 @@ router.get('/', verifyJWT, async(req, res) => {
 router.put('/:id', verifyJWT, (req, res) => {
     const id = req.params?.id;
     const body = {
-        name: req.body?.name,
-        location: req.body?.location
+        Name: req.body?.Name,
+        Location: req.body?.Location
     }
 
-    if(!body?.name && !body?.location){
+    if(!body?.Name && !body?.Location){
         res.json({
             success: false,
-            message: "sponsor нэр болон хаягийг оруулна"
-        })
+            message: "Агуулахын нэр болон хаягийг оруулна"
+        })  
         return
     }
-    Supplier.findByIdAndUpdate(id, { ...body }
+    Warehouse.findByIdAndUpdate(id, { ...body },
     ).then(data => res.json({
         success: true,
         values: data
@@ -73,28 +83,21 @@ router.put('/:id', verifyJWT, (req, res) => {
  * Delete
  */
 router.delete('/:id', verifyJWT, async(req, res) => {
-    try{
         const id = req.params.id;
-        const deletedSupplier = await Supplier.findByIdAndDelete(id);
-
-        if(deletedSupplier) {
+        const DeletedData = await Warehouse.findByIdAndDelete(id);
+        console.log(DeletedData);
+        if(DeletedData) {
             res.json({
-                status: true,
-                message: "supplier deleted successfully.",
-                data: deletedSupplier
+                success: true,
+                message: "Warehouse deleted successfully.",
+                data: DeletedData
             })
         } else {
             res.json({
-                status: false,
+                success: false,
                 message: err.message || err
             })
         }
-    } catch (err){
-        res.json({
-            status: false,
-            message: err.message || err
-        })
-    }
 })
 
 module.exports = router;

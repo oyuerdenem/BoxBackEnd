@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 //mongodb
-const store = require('./store.model');
+const Store = require('./Store.model');
 
 const verifyJWT = require('../../middleware/verifyJWT');
 
@@ -10,19 +10,19 @@ const verifyJWT = require('../../middleware/verifyJWT');
  * Create 
  */
 router.post('/', verifyJWT, async (data, res) => {
-    let { name, location } = data.body;
-    name = name.trim();
-    location = location.trim();
+    let { Name, Location } = data.body;
+    Name = Name.trim();
+    Location = Location.trim();
 
-    if (!name || !location) {
+    if (!Name || !Location) {
         return res.json({
             success: false,
             message: "empty input fields."
         })
     }
 
-    const newStore = new store({
-        name, location
+    const newStore = new Store({
+        Name, Location
     });
 
     newStore.save().then(result => {
@@ -41,7 +41,7 @@ router.post('/', verifyJWT, async (data, res) => {
  * Read
  */
 router.get('/', verifyJWT, async (req, res) => {
-    store.find().then(data => res.send({
+    Store.find().then(data => res.send({
         success: true, values: data
     })).catch(err => res.send({
         success: false,
@@ -55,18 +55,18 @@ router.get('/', verifyJWT, async (req, res) => {
  */
 router.put('/:id', verifyJWT, (req, res) => {
     const id = req.params.id;
-    const { name, location } = req.body;
+    const { Name, Location } = req.body;
 
-    if (!name && !location) {
+    if (!Name && !Location) {
         res.json({
             success: false,
-            message: "Please provide both name and location."
+            message: "Please provide both Name and Location."
         })
         return
     }
 
-    store.findByIdAndUpdate(id,
-        { name, location },
+    Store.findByIdAndUpdate(id,
+        { Name, Location },
     ).then(data => res.json({
         success: true,
         values: data
@@ -83,7 +83,7 @@ router.put('/:id', verifyJWT, (req, res) => {
 router.delete('/:id', verifyJWT, async (req, res) => {
     try {
         const id = req.params.id;
-        const deletedStore = await store.findByIdAndDelete(id);
+        const deletedStore = await Store.findByIdAndDelete(id);
 
         if (deletedStore) {
             res.json({
@@ -101,7 +101,7 @@ router.delete('/:id', verifyJWT, async (req, res) => {
         console.error(err);
         res.json({
             success: false,
-            message: "An error occurred while deleting the store."
+            message: "An error occurred while deleting the Store."
         })
     }
 })

@@ -2,13 +2,13 @@ const mongoose = require ('mongoose');
 const Schema = mongoose.Schema;
 
 const MovementSchema = Schema({
-    SendStorageId: {
-      ref: "Storage",
+    SendWarehouseId: {
+      ref: "Warehouse",
       required: true,
       type: mongoose.Schema.Types.ObjectId,
     },
-    RecieveStorageId: {
-      ref: "Storage",
+    RecieveWarehouseId: {
+      ref: "Warehouse",
       required: true,
       type: mongoose.Schema.Types.ObjectId,
     },

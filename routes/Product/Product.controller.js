@@ -2,28 +2,26 @@ const express = require('express');
 const router = express.Router();
 
 //mongodb
-const product = require('./product.model');
+const Product = require('./Product.model');
 
 const verifyJWT = require('../../middleware/verifyJWT');
-const { verify } = require('jsonwebtoken');
+// const { verify } = require('jsonwebtoken');
 
 /**
- * Create product
+ * Create Product
  */
 router.post('/', verifyJWT, async(data, res) => {
-    let {name, price} = data.body;
-    name = name.trim();
-    price = price.trim();
+    let {Name, Price} = data.body;
 
-    if(!name || !price){
+    if(!Name || !Price){
         return res.json({
             success: false,
             message: "empty input fields."
         })
     }
 
-    const newProduct = new product({
-        name, price
+    const newProduct = new Product({
+        Name, Price
     });
 
     newProduct.save().then(result => {
@@ -42,7 +40,7 @@ router.post('/', verifyJWT, async(data, res) => {
  * Read
  */
 router.get('/', verifyJWT, async(req, res) => {
-    product.find().then(data => res.send({
+    Product.find().then(data => res.send({
         success: true, values: data 
     })).catch(err => res.send({
         success: false,
@@ -57,17 +55,17 @@ router.get('/', verifyJWT, async(req, res) => {
  */
 router.put('/:id', verifyJWT, (req, res) => {
     const id = req.params.id;
-    const { name, price } = req.body;
+    const { Name, Price } = req.body;
 
-    if(!name && !price) {
+    if(!Name && !Price) {
         return res.json ({
             success: false,
             message: err.message || err 
         })
     }
 
-    product.findByIdAndUpdate(id,
-        { name, price },
+    Product.findByIdAndUpdate(id,
+        { Name, Price },
     ).then(data => res.json({
         success: true,
         values: data 
@@ -83,7 +81,7 @@ router.put('/:id', verifyJWT, (req, res) => {
 router.delete('/:id', verifyJWT, async(req, res) => {
     try{
         const id = req.params.id;
-        const deletedProduct = await product.findByIdAndDelete(id);
+        const deletedProduct = await Product.findByIdAndDelete(id);
 
         if(deletedProduct){
             res.json({
