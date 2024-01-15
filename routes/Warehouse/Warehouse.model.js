@@ -1,14 +1,14 @@
-const mongoose = require ('mongoose');
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const WarehouseSchema = Schema({
   Name: {
     type: String,
-    required : true
+    required: true
   },
-  Location:{
+  Location: {
     type: String,
-    required : true,
+    required: true,
   },
 })
 
