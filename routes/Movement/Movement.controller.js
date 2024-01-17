@@ -3,16 +3,20 @@ const router = express.Router();
 
 //mongodb
 const MovementModel = require('./Movement.model.js');
+const StockModel = require('../Stock/Stock.model.js');
 
 //JWT
 const verifyJWT = require('../../middleware/verifyJWT.js');
-const StockModel = require('../Stock/Stock.model.js');
 
 /**
  * Create
  */
 router.post('/', verifyJWT, async (data, res) => {
-  let { SendWarehouseId, RecieveWarehouseId, ProductId, Quantity } = data.body;
+  let {
+    SendWarehouseId,
+    RecieveWarehouseId,
+    ProductId,
+    Quantity } = data.body;
 
   const qty = +Quantity;
 
@@ -23,21 +27,30 @@ router.post('/', verifyJWT, async (data, res) => {
     Quantity: Quantity,
     DateAt: new Date()
   });
+  console.log('newData: ', newData);
 
   //finding stock model 
-  const StockInfo = await StockModel.findOne({ SendWarehouseId: SendWarehouseId, ProductId: ProductId })
+  const StockInfo = await StockModel
+    .findOne({
+      SendWarehouseId: SendWarehouseId,
+      ProductId: ProductId
+    })
     .catch(err => res.json({
       success: false,
       message: "Алдаа гарлаа."
     }));
-
+console.log(StockInfo)
   if (StockInfo === null) {
-    return {
+    return res.json({
       success: false,
-      message: "Тус агуулахад таны хүссэн бараа байхгүй байна."
-    }
+      message: "Тус агуулахад таны хүссэн бараа байхгүй байна"
+    })
   } else {
-    const currentQty = await StockModel.findOne({ SendWarehouseId: SendWarehouseId, ProductId: ProductId })
+    const currentQty = await StockModel
+      .findOne({
+        SendWarehouseId: SendWarehouseId,
+        ProductId: ProductId
+      })
       .then(Stock => Stock.Quantity)
       .catch(err => res.json({
         success: false,
@@ -52,7 +65,11 @@ router.post('/', verifyJWT, async (data, res) => {
         message: "Илгээгчийн барааны тоо ширхэгийг шинэчлэхэд алдаа гарлаа."
       }));
 
-      const secondStockInfo = await StockModel.findOne({ SendWarehouseId: SendWarehouseId, ProductId: ProductId })
+      const secondStockInfo = await StockModel
+        .findOne({
+          SendWarehouseId: SendWarehouseId,
+          ProductId: ProductId
+        })
         .catch(err => res.json({
           success: false,
           message: "Алдаа гарлаа."
@@ -65,30 +82,37 @@ router.post('/', verifyJWT, async (data, res) => {
           Quantity: qty,
           DateAt: new Date()
         })
-        await newStockData.save().catch(err => res.json({
-          success: false,
-          message: "Нөөцийн мэдээллийг шинэчлэхэд алдаа гарлаа."
-        }))
+        await newStockData
+          .save()
+          .catch(err => res.json({
+            success: false,
+            message: "Нөөцийн мэдээллийг шинэчлэхэд алдаа гарлаа."
+          }))
       } else {
-        await StockModel.findByIdAndUpdate(secondStockInfo._id, {
-          Quantity: secondStockInfo.Quantity + qty
-        }).catch(err => res.json({
-          success: false,
-          message: "Хүлээн авагчийн барааны тоо ширхэгийг шинэчлэхэд алдаа гарлаа."
-        }));
+        await StockModel
+          .findByIdAndUpdate(secondStockInfo._id, {
+            Quantity: secondStockInfo.Quantity + qty
+          })
+          .catch(err =>
+            res.json({
+              success: false,
+              message: "Хүлээн авагчийн барааны тоо ширхэгийг шинэчлэхэд алдаа гарлаа."
+            }));
       }
 
 
-      newData.save().then(result => {
-        res.json({
-          success: true,
-          message: "",
-          data: result
+      newData.save()
+        .then(result => {
+          res.json({
+            success: true,
+            message: "",
+            data: result
+          })
         })
-      }).catch(err => res.json({
-        success: false,
-        message: err
-      }))
+        .catch(err => res.json({
+          success: false,
+          message: err
+        }))
     } else {
       return {
         success: false,
@@ -97,23 +121,26 @@ router.post('/', verifyJWT, async (data, res) => {
     }
   }
 
-  newData.save().then(result => {
-    res.json({
-      success: true,
-      message: "Хөдөлгөөний мэдээллийн амжилттай хадгаллаа.",
-      data: result
+  newData.save()
+    .then(result => {
+      res.json({
+        success: true,
+        message: "Хөдөлгөөний мэдээллийн амжилттай хадгаллаа.",
+        data: result
+      })
     })
-  }).catch(err => res.json({
-    success: false,
-    message: err
-  }))
+    .catch(err => res.json({
+      success: false,
+      message: err
+    }))
 });
 
 /**
  * Read
  */
 router.get('/', verifyJWT, async (req, res) => {
-  MovementModel.find()
+  MovementModel
+    .find()
     .populate("SendWarehouseId RecieveWarehouseId ProductId")
     .then(data => res
       .send({

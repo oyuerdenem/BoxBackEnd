@@ -25,6 +25,9 @@ const SaleRouter = require('./Routes/Sale/Sale.controller'); //✅
 const MovementRouter = require('./Routes/Movement/Movement.controller'); //✅
 const SupplyingRouter = require('./Routes/Supplying/Supplying.controller');
 
+/** Dashboard */
+const DashboardRouter = require('./Routes/Dashboard/Dashboard.Controller');
+
 //for accepting post form data
 const bodyParser = require('express').json;
 app.use(bodyParser());
@@ -39,6 +42,7 @@ app.use('/supplier', SupplierRouter)
 app.use('/sale', SaleRouter);
 app.use('/movement', MovementRouter)
 app.use('/supplying', SupplyingRouter)
+app.use("/dashboard", DashboardRouter)
 
 app.listen(port, () => {
   console.log('Server running on port ' + port);
