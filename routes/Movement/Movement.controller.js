@@ -27,30 +27,21 @@ router.post('/', verifyJWT, async (data, res) => {
     Quantity: Quantity,
     DateAt: new Date()
   });
-  console.log('newData: ', newData);
 
   //finding stock model 
-  const StockInfo = await StockModel
-    .findOne({
-      SendWarehouseId: SendWarehouseId,
-      ProductId: ProductId
-    })
+  const StockInfo = await StockModel.findOne({ SendWarehouseId: SendWarehouseId, ProductId: ProductId })
     .catch(err => res.json({
       success: false,
       message: "Алдаа гарлаа."
     }));
-console.log(StockInfo)
+
   if (StockInfo === null) {
     return res.json({
       success: false,
       message: "Тус агуулахад таны хүссэн бараа байхгүй байна"
     })
   } else {
-    const currentQty = await StockModel
-      .findOne({
-        SendWarehouseId: SendWarehouseId,
-        ProductId: ProductId
-      })
+    const currentQty = await StockModel.findOne({ SendWarehouseId: SendWarehouseId, ProductId: ProductId })
       .then(Stock => Stock.Quantity)
       .catch(err => res.json({
         success: false,
@@ -58,6 +49,7 @@ console.log(StockInfo)
       }));
 
     if (currentQty > qty) {
+      console.log(currentQty);
       await StockModel.findByIdAndUpdate(StockInfo._id, {
         Quantity: StockInfo.Quantity - qty
       }).catch(err => res.json({
@@ -82,6 +74,7 @@ console.log(StockInfo)
           Quantity: qty,
           DateAt: new Date()
         })
+        console.log(secondStockInfo);
         await newStockData
           .save()
           .catch(err => res.json({
@@ -99,13 +92,11 @@ console.log(StockInfo)
               message: "Хүлээн авагчийн барааны тоо ширхэгийг шинэчлэхэд алдаа гарлаа."
             }));
       }
-
-
       newData.save()
         .then(result => {
           res.json({
             success: true,
-            message: "",
+            message: "Амжилттай.",
             data: result
           })
         })

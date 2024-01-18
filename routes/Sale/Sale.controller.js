@@ -58,7 +58,7 @@ router.post('/', verifyJWT, async (data, res) => {
         message: "Барааны тоо ширхэгийн мэдээллийг авч чадсангүй."
       }));
 
-    if (currentQty > qty) {
+    if (currentQty >= qty) {
 
       await StockModel.findByIdAndUpdate(StockInfo._id, {
         Quantity: StockInfo.Quantity - qty

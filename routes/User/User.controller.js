@@ -114,16 +114,16 @@ router.post('/signin', (req, res) => {
           bcrypt.compare(Password, hashedPassword).then(result => {
             if (result) {
               //create JWTs
-              // const accessToken = jwt.sign(
-              //   { "Email": UserModel.Email },
-              //   process.env.ACCESS_TOKEN_SECRET,
-              //   { expiresIn: '8h' }
-              // )
+              const accessToken = jwt.sign(
+                { "Email": UserModel.Email },
+                process.env.ACCESS_TOKEN_SECRET,
+                { expiresIn: '8h' }
+              )
               //Password match
               res.json({
                 success: true,
                 message: "Signin successful",
-                // accessToken
+                accessToken
               })
             } else {
               res.json({

@@ -90,19 +90,19 @@ router.delete('/:id', verifyJWT, async (req, res) => {
 
     if (deletedSupplier) {
       res.json({
-        status: true,
+        success: true,
         message: "Нийлүүлэгчийн мэдээллийг амжилттай устгалаа.",
         data: deletedSupplier
       })
     } else {
       res.json({
-        status: false,
+        success: false,
         message: err.message || err
       })
     }
   } catch (err) {
     res.json({
-      status: false,
+      success: false,
       message: err.message || err
     })
   }

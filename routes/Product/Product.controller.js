@@ -15,17 +15,17 @@ const verifyJWT = require('../../middleware/verifyJWT');
  * Create Product
  */
 router.post('/', verifyJWT, async (data, res) => {
-  let { Name, Price } = data.body;
+  let { Name, Price, Image } = data.body;
 
-  if (!Name || !Price) {
+  if (!Name || !Price || !Image) {
     return res.json({
       success: false,
       message: "Хоосон мэдээлэл оруулсан тул алдаа гарлаа."
     })
   }
 
-  const newProduct = new Product({
-    Name, Price
+  const newProduct = new Product({ 
+    Name, Price, Image
   });
 
   newProduct.save().then(result => {
@@ -59,9 +59,9 @@ router.get('/', verifyJWT, async (req, res) => {
  */
 router.put('/:id', verifyJWT, (req, res) => {
   const id = req.params.id;
-  const { Name, Price } = req.body;
+  const { Name, Price, Image } = req.body;
 
-  if (!Name && !Price) {
+  if (!Name && !Price && !Image) {
     return res.json({
       success: false,
       message: err.message || err
@@ -69,7 +69,7 @@ router.put('/:id', verifyJWT, (req, res) => {
   }
 
   Product.findByIdAndUpdate(id,
-    { Name, Price },
+    { Name, Price, Image },
   ).then(data => res.json({
     success: true,
     message: "Барааны мэдээллийг амжилттай шинэчлэлээ.",
